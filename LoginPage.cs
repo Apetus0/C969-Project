@@ -1,6 +1,7 @@
 using MySqlConnector;
 using System.Configuration.Provider;
 using System.Data;
+using System.Globalization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace C969_Project
 {
@@ -12,9 +13,24 @@ namespace C969_Project
         {
             InitializeComponent();
             this.Select();
+            Culture();
+         
+            //MessageBox.Show($"The current culture is: {culture.TwoLetterISOLanguageName}");
         }
 
+        private void Culture()
+        {
+            DateTime dateTime = DateTime.Now;
+            DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES");
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "es")
+            {
+                LanguageSpanish = !LanguageSpanish;
+                UpdateLanguageUI();
 
+            }
+        }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
@@ -23,7 +39,7 @@ namespace C969_Project
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            // Fix 1: Use .Text instead of .ToString()
+            int maxLength = 50;
             string username = userNameTB.Text.Trim();
             string password = passwordTB.Text.Trim();
 
@@ -32,11 +48,15 @@ namespace C969_Project
                 MessageBox.Show(GetLocalizedMessage("BlankFields"));
                 return;
             }
+            if (username.Length > maxLength || password.Length > maxLength)
+            {
+                MessageBox.Show(GetLocalizedMessage("InputLength"), GetLocalizedMessage("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             string query = @"SELECT userId, userName FROM user 
                             WHERE userName = @User AND password = @Pass;";
 
-            // Fix 2: Create and open connection locally inside using block
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(ConnectionString))
@@ -111,6 +131,7 @@ namespace C969_Project
                 return key switch
                 {
                     "InvalidCredentials" => "El nombre de usuario y la contraseña proporcionados no coinciden.",
+                    "InputLength" => "Los campos obligatorios no pueden superar los 50 caracteres.",
                     "BlankFields" => "Por favor, introduzca tanto un nombre de usuario como una contraseña.",
                     "SuccessLogin" => "Inicio de sesión exitosa!",
                     "SuccessMBName" => "Éxito",
@@ -122,6 +143,7 @@ namespace C969_Project
             return key switch
             {
                 "InvalidCredentials" => "The username and password provided do not match.",
+                "InputLength" => "The required fields can not be over 50 characters.",
                 "BlankFields" => "The username and password do not match.",
                 "SuccessLogin" => "Login successful!",
                 "SuccessMBName" => "Success",
