@@ -9,13 +9,13 @@ namespace C969_Project
         internal required int Id { get; set; }
         internal required string UserName { get; set; } = string.Empty;
         internal required string Password { get; set; } = string.Empty;
-        internal byte Active { get; set; }
+        internal bool Active { get; set; }
         internal DateTime CreateDate { get; set; }
         internal string CreatedBy { get; set; } = string.Empty;
         internal DateTime LastUpdated { get; set; }
         internal string LastUpdateBy { get; set; }
 
-        internal User(int id, string userName, string password, byte active, DateTime createDate, string createdBy, DateTime lastUpdated, string lastUpdateBy)
+        internal User(int id, string userName, string password, bool active, DateTime createDate, string createdBy, DateTime lastUpdated, string lastUpdateBy)
         {
             Id = id;
             UserName = userName;

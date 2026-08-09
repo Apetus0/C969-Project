@@ -88,6 +88,7 @@
             loginButton.TabIndex = 5;
             loginButton.Text = "Login";
             loginButton.UseVisualStyleBackColor = true;
+            loginButton.Click += loginButton_Click;
             // 
             // exitButton
             // 
@@ -97,6 +98,7 @@
             exitButton.TabIndex = 6;
             exitButton.Text = "Exit";
             exitButton.UseVisualStyleBackColor = true;
+            exitButton.Click += exitButton_Click;
             // 
             // spanishButton
             // 
