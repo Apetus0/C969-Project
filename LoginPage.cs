@@ -8,11 +8,10 @@ namespace C969_Project
     {
         public readonly string ConnectionString = "Server=localhost;Port=3306;Database=client_schedule;User Id=sqlUser;Password=Passw0rd!;";
         bool LanguageSpanish;
-        bool LanguageEnglish = true;
         public LoginPage()
         {
             InitializeComponent();
-
+            this.Select();
         }
 
 
@@ -30,7 +29,7 @@ namespace C969_Project
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Please enter both a username and password.");
+                MessageBox.Show(GetLocalizedMessage("BlankFields"));
                 return;
             }
 
@@ -55,13 +54,13 @@ namespace C969_Project
                             {
                                 string user = reader.GetString("userName");
 
-                                MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show(GetLocalizedMessage("SuccessLogin"), GetLocalizedMessage("SuccessMBName"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                                 // TODO: Proceed to Main Dashboard Form
                             }
                             else
                             {
-                                MessageBox.Show("The username and password do not match.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(GetLocalizedMessage("InvalidCredentials"), GetLocalizedMessage("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -69,15 +68,21 @@ namespace C969_Project
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{GetLocalizedMessage("Error")}: {ex.Message}", GetLocalizedMessage("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void spanishButton_Click(object sender, EventArgs e)
         {
             LanguageSpanish = !LanguageSpanish;
+            UpdateLanguageUI();
 
-            if (LanguageSpanish == true)
+
+        }
+
+        private void UpdateLanguageUI()
+        {
+            if (LanguageSpanish)
             {
                 appLabel.Text = "Aplicación de Programación";
                 appLabel.Location = new Point(259, 124);
@@ -97,7 +102,33 @@ namespace C969_Project
                 exitButton.Text = "Exit";
                 spanishButton.Text = "Español";
             }
-        
+        }
+
+        private string GetLocalizedMessage(string key)
+        {
+            if (LanguageSpanish)
+            {
+                return key switch
+                {
+                    "InvalidCredentials" => "El nombre de usuario y la contraseña proporcionados no coinciden.",
+                    "BlankFields" => "Por favor, introduzca tanto un nombre de usuario como una contraseña.",
+                    "SuccessLogin" => "Inicio de sesión exitosa!",
+                    "SuccessMBName" => "Éxito",
+                    "Error" => "Error",
+                    _ => "Error"
+                };
+            }
+
+            return key switch
+            {
+                "InvalidCredentials" => "The username and password provided do not match.",
+                "BlankFields" => "The username and password do not match.",
+                "SuccessLogin" => "Login successful!",
+                "SuccessMBName" => "Success",
+                "Error" => "Error",
+                _ => "Error"
+            };
+
         }
     }
 
