@@ -28,56 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
+            appLabel = new Label();
             userNameTB = new TextBox();
-            Password = new Label();
             passwordTB = new TextBox();
             loginButton = new Button();
             exitButton = new Button();
             spanishButton = new Button();
             SuspendLayout();
             // 
-            // label1
+            // appLabel
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(312, 124);
-            label1.Name = "label1";
-            label1.Size = new Size(145, 25);
-            label1.TabIndex = 0;
-            label1.Text = "Scheduling App";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(286, 171);
-            label2.Name = "label2";
-            label2.Size = new Size(60, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Username";
+            appLabel.AutoSize = true;
+            appLabel.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            appLabel.Location = new Point(312, 124);
+            appLabel.Name = "appLabel";
+            appLabel.Size = new Size(145, 25);
+            appLabel.TabIndex = 0;
+            appLabel.Text = "Scheduling App";
             // 
             // userNameTB
             // 
-            userNameTB.Location = new Point(369, 168);
+            userNameTB.Location = new Point(312, 161);
             userNameTB.Name = "userNameTB";
-            userNameTB.Size = new Size(100, 23);
+            userNameTB.PlaceholderText = "Username...";
+            userNameTB.Size = new Size(145, 23);
             userNameTB.TabIndex = 2;
-            // 
-            // Password
-            // 
-            Password.AutoSize = true;
-            Password.Location = new Point(286, 205);
-            Password.Name = "Password";
-            Password.Size = new Size(57, 15);
-            Password.TabIndex = 3;
-            Password.Text = "Password";
             // 
             // passwordTB
             // 
-            passwordTB.Location = new Point(369, 202);
+            passwordTB.Location = new Point(312, 190);
             passwordTB.Name = "passwordTB";
-            passwordTB.Size = new Size(100, 23);
+            passwordTB.PlaceholderText = "Password...";
+            passwordTB.Size = new Size(145, 23);
             passwordTB.TabIndex = 4;
             // 
             // loginButton
@@ -108,6 +90,7 @@
             spanishButton.TabIndex = 7;
             spanishButton.Text = "Español";
             spanishButton.UseVisualStyleBackColor = true;
+            spanishButton.Click += spanishButton_Click;
             // 
             // LoginPage
             // 
@@ -118,10 +101,8 @@
             Controls.Add(exitButton);
             Controls.Add(loginButton);
             Controls.Add(passwordTB);
-            Controls.Add(Password);
             Controls.Add(userNameTB);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(appLabel);
             Name = "LoginPage";
             Text = "Form1";
             ResumeLayout(false);
@@ -130,10 +111,8 @@
 
         #endregion
 
-        private Label label1;
-        private Label label2;
+        private Label appLabel;
         private TextBox userNameTB;
-        private Label Password;
         private TextBox passwordTB;
         private Button loginButton;
         private Button exitButton;

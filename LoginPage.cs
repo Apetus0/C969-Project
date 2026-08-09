@@ -1,11 +1,14 @@
 using MySqlConnector;
 using System.Configuration.Provider;
 using System.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace C969_Project
 {
     public partial class LoginPage : Form
     {
         public readonly string ConnectionString = "Server=localhost;Port=3306;Database=client_schedule;User Id=sqlUser;Password=Passw0rd!;";
+        bool LanguageSpanish;
+        bool LanguageEnglish = true;
         public LoginPage()
         {
             InitializeComponent();
@@ -50,7 +53,6 @@ namespace C969_Project
                         {
                             if (reader.HasRows && reader.Read())
                             {
-                                int userId = reader.GetInt32("userId");
                                 string user = reader.GetString("userName");
 
                                 MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -71,7 +73,33 @@ namespace C969_Project
             }
         }
 
+        private void spanishButton_Click(object sender, EventArgs e)
+        {
+            LanguageSpanish = !LanguageSpanish;
+
+            if (LanguageSpanish == true)
+            {
+                appLabel.Text = "Aplicación de Programación";
+                appLabel.Location = new Point(259, 124);
+                userNameTB.PlaceholderText = "Nombre de Usuario...";
+                passwordTB.PlaceholderText = "Contraseña...";
+                loginButton.Text = "Acceso";
+                exitButton.Text = "Salida";
+                spanishButton.Text = "English";
+            }
+            else
+            {
+                appLabel.Text = "Scheduling App";
+                appLabel.Location = new Point(312, 124);
+                userNameTB.PlaceholderText = "Username...";
+                passwordTB.PlaceholderText = "Password...";
+                loginButton.Text = "Login";
+                exitButton.Text = "Exit";
+                spanishButton.Text = "Español";
+            }
+        
+        }
     }
-    
+
 }
 
