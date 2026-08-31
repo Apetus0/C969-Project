@@ -2,19 +2,20 @@ using MySqlConnector;
 using System.Configuration.Provider;
 using System.Data;
 using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
 namespace C969_Project
 {
     public partial class LoginPage : Form
     {
         public readonly string ConnectionString = "Server=localhost;Port=3306;Database=client_schedule;User Id=sqlUser;Password=Passw0rd!;";
-        bool LanguageSpanish;
+        bool IsSpanish;
         public LoginPage()
         {
             InitializeComponent();
+            this.Text = "Scheduling App";
             this.Select();
             Culture();
-         
+            
             //MessageBox.Show($"The current culture is: {culture.TwoLetterISOLanguageName}");
         }
 
@@ -22,11 +23,11 @@ namespace C969_Project
         {
             DateTime dateTime = DateTime.Now;
             DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES");
             CultureInfo culture = CultureInfo.CurrentCulture;
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "es")
             {
-                LanguageSpanish = !LanguageSpanish;
+                IsSpanish = !IsSpanish;
                 UpdateLanguageUI();
 
             }
@@ -76,11 +77,28 @@ namespace C969_Project
 
                                 MessageBox.Show(GetLocalizedMessage("SuccessLogin"), GetLocalizedMessage("SuccessMBName"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // TODO: Proceed to Main Dashboard Form
+                                this.Hide();
+                                MainPage mainPage = new();
+                                mainPage.ShowDialog();
+
+
+
+                                string loginHistory = "Login_History.txt";
+                                if(!File.Exists(loginHistory))
+                                {
+                                    File.WriteAllText(loginHistory, "Login History file.");
+                                }
+                                File.AppendAllText(loginHistory, $"\nLogin Successful! Username: {username}, Timestamp: {DateTime.UtcNow}");
                             }
                             else
                             {
                                 MessageBox.Show(GetLocalizedMessage("InvalidCredentials"), GetLocalizedMessage("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                string loginHistory = "Login_History.txt";
+                                if (!File.Exists(loginHistory))
+                                {
+                                    File.WriteAllText(loginHistory, "Login History file.");
+                                }
+                                File.AppendAllText(loginHistory, $"\nLogin Unsuccessful! Username: {username}, Timestamp: {DateTime.UtcNow}");
                             }
                         }
                     }
@@ -94,7 +112,7 @@ namespace C969_Project
 
         private void spanishButton_Click(object sender, EventArgs e)
         {
-            LanguageSpanish = !LanguageSpanish;
+            IsSpanish = !IsSpanish;
             UpdateLanguageUI();
 
 
@@ -102,7 +120,7 @@ namespace C969_Project
 
         private void UpdateLanguageUI()
         {
-            if (LanguageSpanish)
+            if (IsSpanish)
             {
                 appLabel.Text = "Aplicación de Programación";
                 appLabel.Location = new Point(259, 124);
@@ -126,7 +144,7 @@ namespace C969_Project
 
         private string GetLocalizedMessage(string key)
         {
-            if (LanguageSpanish)
+            if (IsSpanish)
             {
                 return key switch
                 {
@@ -144,7 +162,7 @@ namespace C969_Project
             {
                 "InvalidCredentials" => "The username and password provided do not match.",
                 "InputLength" => "The required fields can not be over 50 characters.",
-                "BlankFields" => "The username and password do not match.",
+                "BlankFields" => "Pease enter a username and password.",
                 "SuccessLogin" => "Login successful!",
                 "SuccessMBName" => "Success",
                 "Error" => "Error",
