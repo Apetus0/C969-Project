@@ -69,6 +69,7 @@
             addAppointmentButton.TabIndex = 2;
             addAppointmentButton.Text = "Add";
             addAppointmentButton.UseVisualStyleBackColor = true;
+            addAppointmentButton.Click += addAppointmentButton_Click;
             // 
             // updateAppointmentButton
             // 

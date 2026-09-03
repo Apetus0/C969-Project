@@ -53,5 +53,11 @@ namespace C969_Project
 
             appointmentDataGridView.Refresh();
         }
+
+        private void addAppointmentButton_Click(object sender, EventArgs e)
+        {
+            AddAppointment addAppointmentPage = new();
+            addAppointmentPage.ShowDialog();
+        }
     }
 }

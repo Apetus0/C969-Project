@@ -60,6 +60,39 @@ namespace C969_Project
 
             return appointments;
         }
+
+        internal static List<Customer> GetCustomers()
+        {
+            List<Customer> customers = new();
+
+            using (MySqlConnection conn = new(ConnectionString))
+            {
+                conn.Open();
+
+                string sql = "SELECT * FROM client_schedule.customer";
+                using (MySqlCommand cmd = new(sql, conn))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        var customer = new Customer
+                            (
+                                reader.GetInt32("customerId"),
+                                reader.IsDBNull("customerName") ? string.Empty : reader.GetString("customerName"),
+                                reader.GetInt32("addressId"),
+                                reader.GetBoolean("addressId"),
+                                DateTime.SpecifyKind(reader.GetDateTime("createDate"), DateTimeKind.Utc).ToLocalTime(),
+                                reader.IsDBNull("createdBy") ? string.Empty : reader.GetString("createdBy"),
+                                DateTime.SpecifyKind(reader.GetDateTime("lastUpdate"), DateTimeKind.Utc).ToLocalTime(),
+                                reader.IsDBNull("lastUpdateBy") ? string.Empty : reader.GetString("lastUpdateBy")
+                            );
+                        customers.Add(customer);
+                    }
+                }
+            }
+
+                return customers;
+        }
     }
 }
 
