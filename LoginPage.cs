@@ -7,7 +7,6 @@ namespace C969_Project
 {
     public partial class LoginPage : Form
     {
-        public readonly string ConnectionString = "Server=localhost;Port=3306;Database=client_schedule;User Id=sqlUser;Password=Passw0rd!;";
         bool IsSpanish;
         public LoginPage()
         {
@@ -23,7 +22,7 @@ namespace C969_Project
         {
             DateTime dateTime = DateTime.Now;
             DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES");
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES");
             CultureInfo culture = CultureInfo.CurrentCulture;
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "es")
             {
@@ -43,6 +42,7 @@ namespace C969_Project
             int maxLength = 50;
             string username = userNameTB.Text.Trim();
             string password = passwordTB.Text.Trim();
+            int id;
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
@@ -60,7 +60,7 @@ namespace C969_Project
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                using (MySqlConnection conn = new MySqlConnection(DBManager.ConnectionString))
                 {
                     conn.Open();
 
@@ -68,20 +68,26 @@ namespace C969_Project
                     {
                         cmd.Parameters.AddWithValue("@User", username);
                         cmd.Parameters.AddWithValue("@Pass", password);
+                        
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows && reader.Read())
                             {
                                 string user = reader.GetString("userName");
+                                id = reader.GetInt32("userId");
 
                                 MessageBox.Show(GetLocalizedMessage("SuccessLogin"), GetLocalizedMessage("SuccessMBName"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                DBManager.CurrentUser = new User(id, username, password);
+                                //MessageBox.Show(DBManager.CurrentUser.UserName);
 
                                 this.Hide();
                                 MainPage mainPage = new();
                                 mainPage.ShowDialog();
+                                this.Close();
 
-
+                               
 
                                 string loginHistory = "Login_History.txt";
                                 if(!File.Exists(loginHistory))
