@@ -81,7 +81,7 @@ namespace C969_Project.Database
                                 reader.GetInt32("customerId"),
                                 reader.IsDBNull("customerName") ? string.Empty : reader.GetString("customerName"),
                                 reader.GetInt32("addressId"),
-                                reader.GetBoolean("addressId"),
+                                reader.GetBoolean("active"),
                                 DateTime.SpecifyKind(reader.GetDateTime("createDate"), DateTimeKind.Utc).ToLocalTime(),
                                 reader.IsDBNull("createdBy") ? string.Empty : reader.GetString("createdBy"),
                                 DateTime.SpecifyKind(reader.GetDateTime("lastUpdate"), DateTimeKind.Utc).ToLocalTime(),
@@ -99,10 +99,12 @@ namespace C969_Project.Database
             DateTime start, DateTime end, DateTime createDate, string createdBy,
             DateTime lastUpdate, string lastUpdateBy)
         {
-            using (MySqlConnection conn = new(ConnectionString))
+            try
+           { 
+                using (MySqlConnection conn = new(ConnectionString))
                 {
-                conn.Open();
-                string sql = @"INSERT INTO appointment 
+                    conn.Open();
+                    string sql = @"INSERT INTO appointment 
                     (customerId, userId, title, description, location, contact, type, url,
                     start, end, createDate, createdBy, lastUpdate, lastUpdateBy)
                     VALUES 
@@ -110,23 +112,29 @@ namespace C969_Project.Database
                         'Not Needed', @type, 'Not Needed', @start, @end, @createDate, @createdBy, 
                         @lastUpdate, @lastUpdateBy)";
 
-                using (MySqlCommand cmd = new(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@customerId", customerId);
-                    cmd.Parameters.AddWithValue("@userId", userId);
-                    cmd.Parameters.AddWithValue("@type", type);
-                    cmd.Parameters.AddWithValue("@start", start);
-                    cmd.Parameters.AddWithValue("@end", end);
-                    cmd.Parameters.AddWithValue("@createDate", createDate);
-                    cmd.Parameters.AddWithValue("@createdBy", createdBy);
-                    cmd.Parameters.AddWithValue("@lastUpdate", lastUpdate);
-                    cmd.Parameters.AddWithValue("@lastUpdateBy", lastUpdateBy);
+                    using (MySqlCommand cmd = new(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@customerId", customerId);
+                        cmd.Parameters.AddWithValue("@userId", userId);
+                        cmd.Parameters.AddWithValue("@type", type);
+                        cmd.Parameters.AddWithValue("@start", start);
+                        cmd.Parameters.AddWithValue("@end", end);
+                        cmd.Parameters.AddWithValue("@createDate", createDate);
+                        cmd.Parameters.AddWithValue("@createdBy", createdBy);
+                        cmd.Parameters.AddWithValue("@lastUpdate", lastUpdate);
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", lastUpdateBy);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
 
-                    // Retrieves the auto-incremented ID created by mysql
-                    return (int)cmd.LastInsertedId;
+                        // Retrieves the auto-incremented ID created by mysql
+                        return (int)cmd.LastInsertedId;
+                    }
                 }
+            }
+            catch (MySqlException ex)
+            {
+                // Log error or rethrow with custom message for UI layer
+                throw new Exception($"Database error saving appointment (Error Code {ex.Number}): {ex.Message}", ex);
             }
         }
     }
