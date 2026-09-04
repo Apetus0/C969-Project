@@ -145,6 +145,7 @@
             addTypeComboBox.DisplayMember = "Type";
             addTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             addTypeComboBox.FormattingEnabled = true;
+            addTypeComboBox.Items.AddRange(new object[] { "Consulation", "Interview", "Presentation", "Lunch", "Scrum" });
             addTypeComboBox.Location = new Point(151, 160);
             addTypeComboBox.Name = "addTypeComboBox";
             addTypeComboBox.Size = new Size(200, 23);

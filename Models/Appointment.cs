@@ -9,12 +9,12 @@ namespace C969_Project.Models
         public int AppointmentId { get; set; }
         public int CustomerId { get; set; }
         public int UserId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; } = string.Empty;
-        public string Location { get; set; }
-        public string Contact { get; set; }
-        public string Type { get; set; }
-        public string Url { get; set; }
+        public string Title { get; set; } = "not needed";
+        public string Description { get; set; } = "not needed";
+        public string Location { get; set; } = "not needed";
+        public string Contact { get; set; } = "not needed";
+        public string Type { get; set; } = "not needed";
+        public string Url { get; set; } = "not needed";
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public DateTime CreateDate { get; set; }
@@ -43,5 +43,22 @@ namespace C969_Project.Models
             LastUpdate = lastUpdate;
             LastUpdateBy = lastUpdateBy;
         }
+
+        public Appointment(int customerId, int userId, string type,
+            DateTime start, DateTime end, DateTime createDate, string createdBy,
+            DateTime lastUpdate, string lastUpdateBy)
+        {
+            CustomerId = customerId;
+            UserId = userId;
+            Type = type;
+            Start = start;
+            End = end;
+            CreateDate = createDate;
+            CreatedBy = createdBy;
+            LastUpdate = lastUpdate;
+            LastUpdateBy = lastUpdateBy;
+        }
+
+
     }
 }

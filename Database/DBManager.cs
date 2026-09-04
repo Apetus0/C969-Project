@@ -94,6 +94,41 @@ namespace C969_Project.Database
 
                 return customers;
         }
+
+        internal static int AddAppointment(int customerId, int userId, string type,
+            DateTime start, DateTime end, DateTime createDate, string createdBy,
+            DateTime lastUpdate, string lastUpdateBy)
+        {
+            using (MySqlConnection conn = new(ConnectionString))
+                {
+                conn.Open();
+                string sql = @"INSERT INTO appointment 
+                    (customerId, userId, title, description, location, contact, type, url,
+                    start, end, createDate, createdBy, lastUpdate, lastUpdateBy)
+                    VALUES 
+                        (@customerId, @userId, 'Not Needed', 'Not Needed', 'Not Needed', 
+                        'Not Needed', @type, 'Not Needed', @start, @end, @createDate, @createdBy, 
+                        @lastUpdate, @lastUpdateBy)";
+
+                using (MySqlCommand cmd = new(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.Parameters.AddWithValue("@type", type);
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@createDate", createDate);
+                    cmd.Parameters.AddWithValue("@createdBy", createdBy);
+                    cmd.Parameters.AddWithValue("@lastUpdate", lastUpdate);
+                    cmd.Parameters.AddWithValue("@lastUpdateBy", lastUpdateBy);
+
+                    cmd.ExecuteNonQuery();
+
+                    // Retrieves the auto-incremented ID created by mysql
+                    return (int)cmd.LastInsertedId;
+                }
+            }
+        }
     }
 }
 
