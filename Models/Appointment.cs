@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace C969_Project
+namespace C969_Project.Models
 {
     public sealed record Appointment
     {

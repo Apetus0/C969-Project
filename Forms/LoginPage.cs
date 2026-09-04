@@ -1,3 +1,4 @@
+using C969_Project.Database;
 using MySqlConnector;
 using System.Configuration.Provider;
 using System.Data;
@@ -79,7 +80,7 @@ namespace C969_Project
 
                                 MessageBox.Show(GetLocalizedMessage("SuccessLogin"), GetLocalizedMessage("SuccessMBName"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                DBManager.CurrentUser = new User(id, username, password);
+                                DBManager.CurrentUser = new Models.User(id, username, password);
                                 //MessageBox.Show(DBManager.CurrentUser.UserName);
 
                                 this.Hide();

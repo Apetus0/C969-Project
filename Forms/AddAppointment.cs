@@ -1,4 +1,5 @@
-﻿using System;
+﻿using C969_Project.Database;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace C969_Project
             InitializeComponent();
             addIdTextBox.ReadOnly = true;
             addCustomerComboBox.DataSource = DBManager.GetCustomers();
+
         }
 
         private void addSaveButton_Click(object sender, EventArgs e)

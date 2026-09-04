@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
+﻿using C969_Project.Models;
+using Microsoft.VisualBasic.ApplicationServices;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,11 @@ using System.Security.Policy;
 using System.Text;
 
 
-namespace C969_Project
+namespace C969_Project.Database
 {
     internal class DBManager
     {
-       public static User CurrentUser;
+       public static Models.User CurrentUser;
 
        public static readonly string ConnectionString = "Server=localhost;Port=3306;Database=client_schedule;User Id=sqlUser;Password=Passw0rd!;";
        

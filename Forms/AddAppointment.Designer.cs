@@ -41,6 +41,7 @@
             addCancelButton = new Button();
             addTypeComboBox = new ComboBox();
             addCustomerComboBox = new ComboBox();
+            label7 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -141,6 +142,8 @@
             // 
             // addTypeComboBox
             // 
+            addTypeComboBox.DisplayMember = "Type";
+            addTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             addTypeComboBox.FormattingEnabled = true;
             addTypeComboBox.Location = new Point(151, 160);
             addTypeComboBox.Name = "addTypeComboBox";
@@ -150,17 +153,27 @@
             // addCustomerComboBox
             // 
             addCustomerComboBox.DisplayMember = "CustomerName";
+            addCustomerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             addCustomerComboBox.FormattingEnabled = true;
             addCustomerComboBox.Location = new Point(151, 120);
             addCustomerComboBox.Name = "addCustomerComboBox";
             addCustomerComboBox.Size = new Size(200, 23);
             addCustomerComboBox.TabIndex = 3;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(92, 295);
+            label7.Name = "label7";
+            label7.Size = new Size(0, 15);
+            label7.TabIndex = 13;
+            // 
             // AddAppointment
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(435, 450);
+            Controls.Add(label7);
             Controls.Add(addCancelButton);
             Controls.Add(addSaveButton);
             Controls.Add(label6);
@@ -195,5 +208,6 @@
         private Button addCancelButton;
         private ComboBox addTypeComboBox;
         private ComboBox addCustomerComboBox;
+        private Label label7;
     }
 }
